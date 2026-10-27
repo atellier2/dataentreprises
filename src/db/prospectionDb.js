@@ -183,3 +183,28 @@ export function patchAnnotations(sirens, patch) {
 }
 
 export const patchAnnotation = (siren, patch) => patchAnnotations([siren], patch)
+
+// Every note/emoji record, as stored: the payload of a backup.
+export async function exportAnnotations() {
+  const db = await openDb()
+  return request(db.transaction(NOTES, 'readonly').objectStore(NOTES).getAll())
+}
+
+// Writes backed-up records back, in one transaction (all or nothing). A field
+// present in the backup replaces the stored one; a field it lacks is left as is.
+// Resolves with the number of records written.
+export function importAnnotations(records) {
+  return run(NOTES, 'readwrite', tx => {
+    const store = tx.objectStore(NOTES)
+    for (const { siren, text, emoji } of records) {
+      const getReq = store.get(siren)
+      getReq.onsuccess = () => {
+        const merged = { ...getReq.result, siren }
+        if (text) merged.text = text
+        if (emoji) merged.emoji = emoji
+        store.put(merged)
+      }
+    }
+    return records.length
+  })
+}

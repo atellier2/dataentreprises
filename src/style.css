@@ -481,6 +481,40 @@ a.company-link:hover {
   margin: 20px 24px 0;
 }
 
+.backup {
+  margin-top: 28px;
+  padding: 16px;
+  max-width: 560px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.backup h2 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.backup p {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.backup-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.backup-message {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+.backup-message.error {
+  color: #b91c1c;
+}
+
 .new-base {
   display: flex;
   gap: 10px;
